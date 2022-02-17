@@ -7,8 +7,7 @@ Created on Wed Feb 16 17:35:28 2022
 
 from flask import Flask, render_template, redirect, url_for
 from flask_pymongo import PyMongo
-from bs4 import BeautifulSoup as soup
-"""import scraping"""
+import scraping
 
 """ Set up Flask """
 app = Flask(__name__)
