@@ -105,6 +105,7 @@ executable_path = {'executable_path': ChromeDriverManager().install()}
 browser = Browser('chrome', **executable_path, headless=False)
 
 def hemispheres(browser):
+    
     # 1. Use browser to visit the URL 
     url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
     browser.visit(url)
@@ -112,35 +113,39 @@ def hemispheres(browser):
     # 2. Create a list to hold the images and titles
     hemisphere_image_urls = []
 
-# 3. Write code to retrieve the image urls and titles for each hemisphere
-urls_titles = browser.find_by_css('a.product-item img')
+    # 3. Write code to retrieve the image urls and titles for each hemisphere
+    urls_titles = browser.find_by_css('a.product-item img')
 
-for i in range(len(urls_titles)):
+    for i in range(len(urls_titles)):
     
-    hemisphere={}
+        hemisphere={}
     
-    # Click on each hemisphere link to get to the full image
-    browser.find_by_css('a.product-item img')[i].click()
+        # Click on each hemisphere link to get to the full image
+        browser.find_by_css('a.product-item img')[i].click()
     
-    # Find 'Sample'/full-size image link - link contains the full-sized image
-    # Don't need to click again - can get all the info from here
-    sample_link = browser.links.find_by_text('Sample').first
+        # Find 'Sample'/full-size image link - link contains the full-sized image
+        # Don't need to click again - can get all the info from here
+        sample_link = browser.links.find_by_text('Sample').first
     
-    # Get hemisphere image link
-    hemisphere['img_url'] = sample_link['href']
+        # Get hemisphere image link
+        hemisphere['img_url'] = sample_link['href']
     
-    # Get hemisphere Title 
-    hemisphere['title'] = browser.find_by_css('h2.title').text
+        # Get hemisphere Title 
+        hemisphere['title'] = browser.find_by_css('h2.title').text
     
-    # Add data from hemisphere dictionary to hemisphere_image_urls list
-    # Output a list of dictionaries
-    hemisphere_image_urls.append(hemisphere)
-    
-    # Go back in browser to get url and title for next image
-    browser.back()
+        try:
+            # Add data from hemisphere dictionary to hemisphere_image_urls list
+            # Output a list of dictionaries
+            hemisphere_image_urls.append(hemisphere)
+        
+        except BaseException:
+            return None
+        
+        # Go back in browser to get url and title for next image
+        browser.back()
 
-# 4. Print the list that holds the dictionary of each image url and title.
-hemisphere_image_urls
+        # 4. Print the list that holds the dictionary of each image url and title.
+        return hemisphere_image_urls
 
 # Close down browser
 browser.quit()

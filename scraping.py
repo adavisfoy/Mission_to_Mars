@@ -19,6 +19,7 @@ def scrape_all():
         "news_paragraph": news_paragraph,
         "featured_image": featured_image(browser),
         "facts": mars_facts(),
+        "hemispheres": hemispheres(browser),
         "last_modified": dt.datetime.now()
     }
 
@@ -101,7 +102,56 @@ if __name__ == "__main__":
     print(scrape_all())
 
 
+def hemispheres(browser):
+    
+    # 1. Use browser to visit the URL 
+    url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
+    browser.visit(url)
 
+    # 2. Create a list to hold the images and titles
+    hemisphere_image_urls = []
+
+    # 3. Write code to retrieve the image urls and titles for each hemisphere
+    # urls_titles = browser.find_by_css('a.product-item img')
+
+    for i in range(4):
+    
+        hemispheres={}
+    
+        # Click on each hemisphere link to get to the full image
+        browser.find_by_css('a.product-item img')[i].click()
+    
+        # Find 'Sample'/full-size image link - link contains the full-sized image
+        # Don't need to click again - can get all the info from here
+        sample_link = browser.links.find_by_text('Sample').first
+
+        # Parse the resulting html with soup
+        html = browser.html
+        browser.links_soup = soup(html, 'html.parser')
+        
+        try: 
+            # Get hemisphere image link
+            hemispheres['img_url'] = sample_link['href']
+    
+            # Get hemisphere Title 
+            hemispheres['title'] = browser.find_by_css('h2.title').text
+        
+        except AttributeError: 
+            hemispheres['img_url'] = None
+            hemispheres['title'] = None
+    
+        # Add data from hemisphere dictionary to hemisphere_image_urls list
+        # Output a list of dictionaries
+        hemisphere_image_urls.append(hemispheres)
+        
+        # Go back in browser to get url and title for next image
+        browser.back()
+
+    # 4. Print the list that holds the dictionary of each image url and title.
+    return hemisphere_image_urls
+
+# Close down browser
+# browser.quit()
 
 
 # Article Scraping
