@@ -11,7 +11,7 @@
     <div class="container">
         <div class="jumbotron text-center">
             <h1>Mission to Mars</h1>
-            <p><a class="btn btn-primary btn-lg" href="/scrape"
+            <p><a class="btn btn-info btn-lg" href="/scrape"
                   role="button">Scrape New Data</a></p>
         </div>
     
@@ -29,17 +29,17 @@
      <!-- First level -->
     <div class="row" id="mars-featured-image">
         <!-- Second level -->
-        <div class="col-md-8">
+        <div class="col-md-8 col-xs-18">
           <h2>Featured Mars Image</h2>
           <img 
             src="{{ mars.featured_image }}" 
             class="img-responsive" 
             alt="Responsive image"/>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 col-xs-18">
         <!-- Mars Facts -->
         <div class="row" id="mars-facts">
-            <h4>Mars Facts</h4>
+            <h2 class="text-center">Mars Facts</h2>
             {{ mars.facts | safe }}
     
     <!-- Section for Mars Hemispheres -->
@@ -49,11 +49,11 @@
         </div>
 
         {% for hemispheres in mars.hemispheres %}
-        <div class="col-md-6">
+        <div class="col-md-6 col-xs-9">
           <div class="thumbnail">
-            <img src="{{hemispheres.img_url | default('static/images/error.png', true)}}" alt="...">
+            <img src="{{hemispheres.img_url | default('static/images/error.png', true)}}" alt="..." class="img-rounded">
             <div class="caption">
-              <h3>{{hemispheres.title}}</h3>
+              <h5>{{hemispheres.title}}</h5>
             </div>
           </div>
         </div>
